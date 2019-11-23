@@ -9,8 +9,9 @@ server.listen(PORT, () => console.log(`Listen on *: ${PORT}`));
 
 io.on("connection", socket => {
   const id = socket.client.id;
+  
   console.log(`User connected: ${id}`);
   socket.on("chat message", msg => {
-    console.log(`${id} : ${msg}`);
+    io.emit("chat message", msg);
   });
 });
