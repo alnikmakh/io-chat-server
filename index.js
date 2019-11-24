@@ -10,11 +10,17 @@ server.listen(PORT, () => console.log(`Listen on *: ${PORT}`));
 io.on("connection", socket => {
   const id = socket.client.id;
   
-  console.log(`User connected: ${id}`);
-  socket.on("chat message", msg => {
-    io.emit("chat message", msg);
-  });
+    console.log(`User connected: ${id}`);
   
+  socket.on("login", message => {
+    console.log(message);
+    socket.join(message);
+  });
+
+  socket.on("chat message", msg => {
+    io.to(msg.id).emit("chat message", msg);
+  });
+
   socket.on("disconnect", (reason) => {
     console.log(`User disconnected: ${id}, reason: ${reason}`);
   })
